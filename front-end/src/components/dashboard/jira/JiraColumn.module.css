@@ -1,0 +1,95 @@
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 0;
+  min-width: 260px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 14px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.columnDragOver {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 4px 6px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.dotTodo { background: var(--muted-2); }
+.dotProgress { background: var(--accent); }
+.dotReview { background: #f59e0b; }
+.dotDone { background: var(--success); }
+
+.name {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.count {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted-2);
+  background: var(--surface);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 60px;
+}
+
+.empty {
+  padding: 20px 8px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--muted-2);
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px;
+  border-radius: var(--r-md);
+  border: 1px dashed var(--border-strong);
+  background: transparent;
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.addBtn:hover {
+  background: var(--surface);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.addBtn svg {
+  width: 14px;
+  height: 14px;
+}

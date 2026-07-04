@@ -1,0 +1,72 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-xs);
+  flex-wrap: wrap;
+}
+
+.iconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.iconWrap svg {
+  width: 19px;
+  height: 19px;
+}
+
+.info {
+  flex: 1;
+  min-width: 180px;
+}
+
+.typeLabel {
+  margin: 0 0 3px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.title {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.when {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: var(--r-md);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.action:hover {
+  background: var(--accent-strong);
+  transform: translateY(-2px);
+}

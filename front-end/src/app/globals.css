@@ -1,0 +1,266 @@
+:root {
+  color-scheme: light;
+
+  /* Brand — a single true blue accent, used sparingly for primary actions & links */
+  --accent: #2563eb;
+  --accent-strong: #1d4ed8;
+  --accent-soft: #dbeafe;
+  --success: #0e9e76;
+
+  /* Ink & neutrals — the UI is otherwise grayscale */
+  --ink: #100e24;
+  --ink-2: #2c2a45;
+  --muted: #6b6885;
+  --muted-2: #918fa6;
+  --soft: #ffffff;
+
+  /* Surfaces */
+  --bg-soft: #f8f9fa;
+  --bg-tint: #fbfbfe;
+  --surface: #ffffff;
+  --surface-2: #f1f2f5;
+  --border: rgba(16, 14, 36, 0.07);
+  --border-strong: rgba(16, 14, 36, 0.12);
+
+  /* Elevation — neutral only, no colored/glow shadows */
+  --shadow-xs: 0 1px 2px rgba(16, 14, 36, 0.04);
+  --shadow-sm: 0 4px 12px -4px rgba(16, 14, 36, 0.08);
+  --shadow-md: 0 14px 34px -12px rgba(16, 14, 36, 0.14);
+  --shadow-lg: 0 30px 60px -20px rgba(16, 14, 36, 0.22);
+
+  /* Radii & motion — one shared scale used by every interactive element */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-xl: 30px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --accent: #4f8cf5;
+  --accent-strong: #7eb0f8;
+  --accent-soft: rgba(79, 140, 245, 0.18);
+  --success: #34d399;
+
+  --ink: #f2f1f7;
+  --ink-2: #d6d4e3;
+  --muted: #a7a4bd;
+  --muted-2: #86839f;
+  --soft: #1e1c33;
+
+  --bg-soft: #0b0a13;
+  --bg-tint: #100e1c;
+  --surface: #17162a;
+  --surface-2: #1e1c33;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-sm: 0 4px 14px -4px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 14px 36px -12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 30px 64px -20px rgba(0, 0, 0, 0.55);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--bg-soft);
+  color: var(--ink);
+  font-family: var(--font-manrope), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.006em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+}
+
+::selection {
+  background: rgba(37, 99, 235, 0.18);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+}
+
+/* Global Utilitiles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* LEGACY CSS */
+
+*{box-sizing:border-box;}
+
+
+body{margin:0;background:transparent;color:var(--ink);}
+@keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+@keyframes floaty2{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-12px) rotate(-2deg);}}
+@keyframes floaty3{0%,100%{transform:translateY(0) rotate(2.5deg);}50%{transform:translateY(-10px) rotate(2.5deg);}}
+@keyframes dotPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:.55;}}
+@keyframes checkPop{0%,40%{transform:scale(0);}55%{transform:scale(1.25);}70%,100%{transform:scale(1);}}
+@keyframes barFill{0%{width:18%;}50%{width:64%;}100%{width:18%;}}
+@keyframes tickerRoll{0%,15%{transform:translateY(0);}20%,35%{transform:translateY(-22px);}40%,55%{transform:translateY(-44px);}60%,75%{transform:translateY(-66px);}80%,96%{transform:translateY(-88px);}100%{transform:translateY(-88px);}}
+@keyframes lineRun{0%{left:11%;opacity:0;}6%{opacity:1;}94%{opacity:1;}100%{left:89%;opacity:0;}}
+@keyframes arrowNudge{0%,100%{translate:0;opacity:.5;}50%{translate:5px;opacity:1;}}
+[data-reframe-arrow]{animation:arrowNudge 2.6s ease-in-out infinite;}
+[data-drow] [data-drline]{height:2px;transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,.84,.44,1);border-radius:1px;}
+[data-drow]:hover [data-drline]{transform:scaleX(1)!important;}
+[data-drow] [data-drarrow]{display:inline-block;transition:transform .22s ease;}
+[data-drow]:hover [data-drarrow]{transform:translateX(5px)!important;}
+@keyframes gridLight{0%,100%{opacity:.16;transform:scale(.82);}50%{opacity:1;transform:scale(1);}}
+@keyframes ringPulse{0%{opacity:.55;transform:scale(.78);}11%{opacity:0;transform:scale(1.45);}13%,100%{opacity:0;transform:scale(1.45);}}
+@keyframes hmPop{0%,100%{opacity:.14;transform:scale(.7);}50%{opacity:1;transform:scale(1);}}
+@keyframes caretBlink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+@keyframes termRow{0%{opacity:0;transform:translateY(6px);}7%{opacity:1;transform:none;}84%{opacity:1;}93%,100%{opacity:0;}}
+@keyframes checkSeq{0%,28%{transform:scale(0);}36%{transform:scale(1.25);}43%,92%{transform:scale(1);}98%,100%{transform:scale(0);}}
+@keyframes statusFlip{0%,58%{opacity:1;}64%,100%{opacity:0;}}
+@keyframes statusMerged{0%,60%{opacity:0;transform:scale(.9);}68%{opacity:1;transform:scale(1.05);}74%,94%{opacity:1;transform:scale(1);}99%,100%{opacity:0;}}
+@keyframes curMove{0%{transform:translate(14px,12px);opacity:0;}8%{opacity:1;}40%,52%{transform:translate(168px,92px);opacity:1;}88%{transform:translate(168px,92px);opacity:1;}96%,100%{transform:translate(168px,92px);opacity:0;}}
+@keyframes bubblePop{0%,50%{opacity:0;transform:scale(.6) translateY(6px);}58%{opacity:1;transform:scale(1.04) translateY(0);}64%,90%{opacity:1;transform:scale(1) translateY(0);}97%,100%{opacity:0;}}
+@keyframes fillX{0%{transform:scaleX(0);}18%,84%{transform:scaleX(1);}100%{transform:scaleX(1);}}
+@keyframes gitDraw{0%{stroke-dashoffset:240;}55%,100%{stroke-dashoffset:0;}}
+@keyframes nodeIn{0%,40%{transform:scale(0);}48%{transform:scale(1.3);}56%,100%{transform:scale(1);}}
+@keyframes bubbleStream{0%,8%{transform:translateY(0);}25%,33%{transform:translateY(-31px);}50%,58%{transform:translateY(-62px);}75%,100%{transform:translateY(-93px);}}
+@keyframes ticketScrub{0%{left:0;}100%{left:calc(2*((100% - 32px)/3 + 16px));}}
+@keyframes driftA{0%,100%{transform:translate(0,0);}50%{transform:translate(10px,-14px);}}
+@keyframes driftB{0%,100%{transform:translate(0,0);}50%{transform:translate(-12px,12px);}}
+@keyframes driftC{0%,100%{transform:translate(0,0);}50%{transform:translate(9px,13px);}}
+@keyframes driftD{0%,100%{transform:translate(0,0);}50%{transform:translate(-11px,-9px);}}
+@keyframes marqueeL{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@keyframes marqueeR{from{transform:translateX(-50%);}to{transform:translateX(0);}}
+@keyframes blob{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(40px,-30px) scale(1.15);}}
+@media (max-width:920px){
+[data-navlinks]{display:none!important;}
+[data-burger]{display:inline-flex!important;}
+[data-hero]{grid-template-columns:1fr!important;}
+[data-herovisual]{height:380px!important;margin-top:8px;}
+[data-steps]{grid-template-columns:repeat(2,1fr)!important;}
+[data-stepline]{display:none!important;}
+[data-batches],[data-domaingrid]{grid-template-columns:repeat(2,1fr)!important;}
+[data-domain-header]{display:none!important;}
+[data-domainrow]{grid-template-columns:1fr 1.1fr 80px!important;}
+[data-domain-mid]{display:none!important;}
+[data-mentors]{grid-template-columns:repeat(2,1fr)!important;}
+[data-pillars]{grid-template-columns:1fr!important;}
+[data-stats]{grid-template-columns:repeat(2,1fr)!important;}
+[data-bento]{grid-template-columns:1fr 1fr!important;}
+[data-bento]>div{grid-column:auto!important;}
+[data-bento] [data-wide]{grid-column:1 / -1!important;}
+[data-foot]{grid-template-columns:1fr 1fr!important;}
+}
+@media (max-width:600px){
+[data-steps],[data-batches],[data-mentors],[data-domaingrid]{grid-template-columns:1fr!important;}
+[data-domainrow]{grid-template-columns:1fr auto!important;}
+[data-bento]{grid-template-columns:1fr!important;}
+[data-bento] [data-wide]{grid-template-columns:1fr!important;}
+[data-reframe-row]{grid-template-columns:1fr!important;gap:10px!important;}
+[data-reframe-arrow]{transform:rotate(90deg);justify-self:start!important;}
+[data-cta-panel]{padding:40px 24px!important;}
+[data-hidexs]{display:none!important;}
+}
+@keyframes tickIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+@keyframes simRow{0%,14%{opacity:0;transform:translateY(6px);}18%,82%{opacity:1;transform:none;}86%,100%{opacity:0;}}
+@keyframes progressBar{0%{width:6%;}40%{width:72%;}80%{width:72%;}100%{width:6%;}}
+@keyframes badgePop{0%,60%{opacity:0;transform:scale(.8)translateY(4px);}68%{opacity:1;transform:scale(1.06)translateY(0);}75%,92%{opacity:1;transform:scale(1)translateY(0);}98%,100%{opacity:0;}}
+@keyframes typewriter{0%{width:0;}60%,100%{width:100%;}}
+
+@media (prefers-reduced-motion: reduce){[data-rv]{opacity:1!important;transform:none!important;}*{animation-duration:.001ms!important;animation-iteration-count:1!important;}}
+
+/* ============================================================
+   PREMIUM MOTION SYSTEM
+   ============================================================ */
+
+/* Scroll reveal — gated behind `.js-reveal` on <html> so no-JS users
+   (and crawlers) always see fully rendered content. */
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(28px) scale(0.985); filter: blur(6px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+
+.js-reveal [data-rv] {
+  opacity: 0;
+  transform: translateY(28px);
+  will-change: opacity, transform;
+}
+.js-reveal [data-rv].rv-in {
+  animation: reveal-in 0.85s var(--ease-out) forwards;
+}
+/* Failsafe: force-show everything if the app never hydrates. */
+.rv-failsafe [data-rv],
+.rv-failsafe [data-rv-stagger] > *,
+.rv-failsafe .hero-anim {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  animation: none !important;
+}
+/* Stagger children of an explicitly grouped reveal container */
+.js-reveal [data-rv-stagger].rv-in > * {
+  animation: reveal-in 0.8s var(--ease-out) both;
+}
+.js-reveal [data-rv-stagger].rv-in > *:nth-child(1) { animation-delay: 0.00s; }
+.js-reveal [data-rv-stagger].rv-in > *:nth-child(2) { animation-delay: 0.07s; }
+.js-reveal [data-rv-stagger].rv-in > *:nth-child(3) { animation-delay: 0.14s; }
+.js-reveal [data-rv-stagger].rv-in > *:nth-child(4) { animation-delay: 0.21s; }
+.js-reveal [data-rv-stagger].rv-in > *:nth-child(5) { animation-delay: 0.28s; }
+.js-reveal [data-rv-stagger].rv-in > *:nth-child(6) { animation-delay: 0.35s; }
+
+/* Hero on-load entrance — staggered, plays once on paint */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: none; }
+}
+.hero-anim { opacity: 0; animation: hero-rise 0.9s var(--ease-out) forwards; }
+.hero-anim-1 { animation-delay: 0.05s; }
+.hero-anim-2 { animation-delay: 0.16s; }
+.hero-anim-3 { animation-delay: 0.27s; }
+.hero-anim-4 { animation-delay: 0.38s; }
+
+/* Single solid accent color — no gradient shimmer */
+.grad-text {
+  color: var(--accent);
+}
+
+/* Nav gains depth once the page is scrolled */
+body.nav-scrolled [data-nav],
+body.nav-scrolled nav[class*="nav"] {
+  box-shadow: var(--shadow-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js-reveal [data-rv],
+  .js-reveal [data-rv-stagger].rv-in > *,
+  .hero-anim { opacity: 1 !important; transform: none !important; filter: none !important; animation: none !important; }
+  .grad-text { animation: none !important; }
+}

@@ -1,0 +1,207 @@
+/* ---- Perspective container (also the scroll-reveal target) ---- */
+.card {
+  --active: 0;
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  perspective: 1000px;
+  height: 100%;
+}
+
+/* ---- Tilting layer: rotation + lift + solid accent border on hover ---- */
+.tilt {
+  position: relative;
+  height: 100%;
+  padding: 1.5px;
+  background: var(--border);
+  border-radius: var(--r-lg);
+  transform:
+    rotateX(var(--rx)) rotateY(var(--ry))
+    translateY(calc(var(--active) * -10px))
+    scale(calc(1 + var(--active) * 0.014));
+  transform-style: preserve-3d;
+  transition: transform 0.25s var(--ease-out), background 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 10px 30px -12px rgba(16, 14, 36, 0.10);
+  will-change: transform;
+}
+
+.card:hover .tilt {
+  background: var(--accent);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---- Inner surface ---- */
+.inner {
+  position: relative;
+  height: 100%;
+  background: var(--surface);
+  border-radius: calc(var(--r-lg) - 1px);
+  overflow: hidden;
+}
+
+.content {
+  position: relative;
+  z-index: 4;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transform: translateZ(30px);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  background: var(--surface-2);
+  padding: 6px 12px;
+  border-radius: var(--r-sm);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.card:hover .tag {
+  background: var(--accent);
+  color: #fff;
+}
+
+.tagDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transition: box-shadow 0.3s ease;
+}
+.card:hover .tagDot {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+}
+
+/* Live "seats filling" pill, hidden until hover */
+.seatBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.3s ease, transform 0.3s var(--ease-out);
+}
+.seatBadge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+.card:hover .seatBadge {
+  opacity: 1;
+  transform: none;
+}
+
+.title {
+  margin: 30px 0 0;
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.12;
+}
+
+.meta {
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.mentorRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 36px;
+}
+
+.avatar {
+  width: 46px;
+  height: 46px;
+  object-fit: cover;
+  border-radius: var(--r-sm);
+  filter: grayscale(100%);
+  transition: filter 0.45s ease, transform 0.45s var(--ease-spring);
+}
+.card:hover .avatar {
+  filter: grayscale(0%);
+  transform: scale(1.06) rotate(-2deg);
+}
+
+.mentorName {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.mentorRole {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* Reserve button with sliding arrow */
+.reserveBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: transparent;
+  color: var(--ink);
+  padding: 14px 4px;
+  margin-top: 28px;
+  font-family: var(--font-sora);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  border-top: 1px solid var(--border);
+  width: 100%;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease, padding 0.3s var(--ease-out);
+}
+.card:hover .reserveBtn {
+  color: var(--accent);
+  border-color: rgba(37, 99, 235, 0.35);
+  padding-left: 10px;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.35s var(--ease-spring);
+}
+.card:hover .arrow {
+  transform: translateX(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt { transition: box-shadow 0.3s ease, background 0.3s ease; }
+  .shine { display: none; }
+}

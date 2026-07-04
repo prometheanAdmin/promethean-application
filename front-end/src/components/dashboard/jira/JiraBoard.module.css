@@ -1,0 +1,46 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.newTicketBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--r-md);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13.5px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  flex: none;
+}
+.newTicketBtn:hover {
+  background: var(--accent-strong);
+  transform: translateY(-2px);
+}
+.newTicketBtn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.board {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}

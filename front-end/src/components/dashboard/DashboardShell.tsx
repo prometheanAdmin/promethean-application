@@ -1,0 +1,80 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import ThemeToggle from '@/components/ThemeToggle';
+import Topbar from './Topbar';
+import { dashboardNavItems } from './navItems';
+import { ArrowLeftIcon, MenuIcon, CloseIcon } from './icons';
+import styles from './DashboardShell.module.css';
+
+export default function DashboardShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const isActive = (href: string) =>
+    href === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(href);
+
+  return (
+    <div className={styles.shell}>
+      <button
+        type="button"
+        className={styles.mobileToggle}
+        onClick={() => setMobileOpen((v) => !v)}
+        aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
+      >
+        {mobileOpen ? <CloseIcon /> : <MenuIcon />}
+      </button>
+
+      <aside className={`${styles.sidebar} ${mobileOpen ? styles.sidebarOpen : ''}`}>
+        <Link href="/" className={styles.logoGroup}>
+          <span className={styles.logoMark} />
+          <span className={styles.logoText}>Promethean</span>
+        </Link>
+
+        <nav className={styles.nav}>
+          {dashboardNavItems.map((item) => {
+            const Icon = item.icon;
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                <span className={styles.navIcon}>
+                  <Icon />
+                </span>
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className={styles.sidebarFooter}>
+          <Link href="/" className={styles.backLink}>
+            <ArrowLeftIcon />
+            Back to site
+          </Link>
+          <ThemeToggle />
+        </div>
+      </aside>
+
+      {mobileOpen && (
+        <button
+          type="button"
+          className={styles.scrim}
+          aria-label="Close navigation"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      <main className={styles.content}>
+        <Topbar />
+        {children}
+      </main>
+    </div>
+  );
+}

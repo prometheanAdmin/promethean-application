@@ -1,0 +1,382 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(10, 9, 20, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 26px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--ink);
+  border: none;
+  cursor: pointer;
+}
+.closeBtn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.headerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ink);
+}
+
+.role {
+  margin: 3px 0 0;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.badgeRow {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.domainBadge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.trustBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #f59e0b 16%, var(--surface));
+  color: #b45309;
+}
+:root[data-theme='dark'] .trustBadge {
+  color: #fbbf24;
+}
+
+.yourMentorBadge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--success) 16%, var(--surface));
+  color: var(--success);
+}
+
+.favoriteBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--muted);
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.favoriteBtn svg {
+  width: 18px;
+  height: 18px;
+}
+.favoriteBtnActive {
+  color: #ef4444;
+}
+
+.ratingSummary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--surface-2);
+  border-radius: var(--r-md);
+  margin-bottom: 18px;
+}
+
+.ratingBig {
+  font-family: var(--font-sora);
+  font-weight: 800;
+  font-size: 34px;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.ratingBigWrap {
+  text-align: center;
+  flex: none;
+}
+
+.starsRow {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  margin-top: 4px;
+}
+.starsRow svg {
+  width: 13px;
+  height: 13px;
+  color: #f59e0b;
+}
+
+.ratingCount {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  color: var(--muted-2);
+}
+
+.breakdown {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.breakdownRow {
+  display: grid;
+  grid-template-columns: 14px 1fr 22px;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.breakdownTrack {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+.breakdownFill {
+  height: 100%;
+  background: #f59e0b;
+  border-radius: 999px;
+}
+
+.bio {
+  margin: 0 0 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.tag {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--surface-2);
+  padding: 5px 11px;
+  border-radius: 999px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.bookBtn {
+  flex: 1;
+  min-width: 160px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--r-md);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13.5px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.bookBtn:hover {
+  background: var(--accent-strong);
+}
+.bookBtn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.messageBtn {
+  flex: 1;
+  min-width: 160px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 13.5px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.messageBtn:hover:not(:disabled) {
+  background: var(--border);
+}
+.messageBtn:disabled {
+  cursor: not-allowed;
+  color: var(--muted-2);
+}
+.messageBtn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.lockedNote {
+  width: 100%;
+  font-size: 12px;
+  color: var(--muted-2);
+  text-align: center;
+  margin: -14px 0 24px;
+}
+
+.sectionTitle {
+  margin: 0 0 12px;
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.review {
+  padding: 14px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+}
+
+.reviewTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.reviewAvatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 700;
+  flex: none;
+}
+
+.reviewMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.reviewName {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.reviewDate {
+  font-size: 11px;
+  color: var(--muted-2);
+}
+
+.reviewStars {
+  display: flex;
+  gap: 1px;
+  flex: none;
+}
+.reviewStars svg {
+  width: 11px;
+  height: 11px;
+  color: #f59e0b;
+}
+
+.reviewComment {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.emptyReviews {
+  font-size: 12.5px;
+  color: var(--muted-2);
+  text-align: center;
+  padding: 20px 0;
+}

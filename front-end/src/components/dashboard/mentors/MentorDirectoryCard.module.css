@@ -1,0 +1,248 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.avatarBtn {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+  flex: none;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface-2);
+  display: block;
+}
+
+.identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.nameBtn {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  display: block;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.role {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.favoriteBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--muted);
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.favoriteBtn svg {
+  width: 15px;
+  height: 15px;
+}
+.favoriteBtnActive {
+  color: #ef4444;
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.domainBadge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.trustBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #f59e0b 16%, var(--surface));
+  color: #b45309;
+}
+:root[data-theme='dark'] .trustBadge {
+  color: #fbbf24;
+}
+.trustBadge svg {
+  width: 10px;
+  height: 10px;
+}
+
+.yourMentorBadge {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--success) 16%, var(--surface));
+  color: var(--success);
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.rating svg {
+  width: 13px;
+  height: 13px;
+  color: #f59e0b;
+}
+
+.sessions {
+  font-size: 12px;
+  color: var(--muted-2);
+}
+
+.bio {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+  flex: 1;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--surface-2);
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.bookBtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px;
+  border-radius: var(--r-md);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13.5px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.bookBtn:hover {
+  background: var(--accent-strong);
+  transform: translateY(-2px);
+}
+.bookBtn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.messageBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  flex: none;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  color: var(--ink);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.messageBtn:hover:not(:disabled) {
+  background: var(--border);
+}
+.messageBtn:disabled {
+  color: var(--muted-2);
+  cursor: not-allowed;
+}
+.messageBtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.viewProfileLink {
+  align-self: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}

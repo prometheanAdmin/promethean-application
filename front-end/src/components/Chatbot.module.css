@@ -1,0 +1,266 @@
+.launcher {
+  position: fixed;
+  right: 24px;
+  bottom: 88px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.2s var(--ease-spring), background 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+.launcher:hover {
+  background: var(--accent-strong);
+  transform: translateY(-3px);
+}
+.launcher svg {
+  width: 26px;
+  height: 26px;
+}
+
+.panel {
+  position: fixed;
+  right: 24px;
+  bottom: 88px;
+  z-index: 60;
+  width: min(370px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  max-height: min(560px, calc(100vh - 48px));
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 14px 16px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  flex: none;
+}
+
+.headerIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  flex: none;
+}
+.headerIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.headerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.headerTitle {
+  margin: 0;
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 14.5px;
+}
+
+.headerStatus {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.85);
+}
+.headerStatus span:first-child {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-sm);
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.iconBtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+.iconBtn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 260px;
+}
+
+.row {
+  display: flex;
+}
+.rowUser {
+  justify-content: flex-end;
+}
+.rowBot {
+  justify-content: flex-start;
+}
+
+.bubble {
+  max-width: 84%;
+  padding: 10px 13px;
+  border-radius: var(--r-md);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.bubbleBot {
+  background: var(--surface-2);
+  color: var(--ink);
+  border-bottom-left-radius: 4px;
+}
+.bubbleUser {
+  background: var(--accent);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.bubbleLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.bubbleLink svg {
+  width: 13px;
+  height: 13px;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 16px 12px;
+  flex: none;
+}
+
+.chip {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: none;
+  padding: 7px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.chip:hover {
+  background: color-mix(in srgb, var(--accent) 22%, var(--accent-soft));
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  flex: none;
+}
+
+.input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--ink);
+  font-size: 13.5px;
+  outline: none;
+}
+.input:focus {
+  border-color: var(--accent);
+}
+
+.sendBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+.sendBtn:hover {
+  background: var(--accent-strong);
+}
+.sendBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.sendBtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 480px) {
+  .launcher {
+    right: 16px;
+    bottom: 76px;
+  }
+  .panel {
+    right: 16px;
+    left: 16px;
+    bottom: 76px;
+    width: auto;
+  }
+}

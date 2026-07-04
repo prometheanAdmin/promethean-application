@@ -1,0 +1,179 @@
+.header {
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-sora);
+  font-weight: 800;
+  font-size: clamp(26px, 3vw, 34px);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.heroCard {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-xs);
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+}
+
+.heroInfo {
+  flex: 1;
+  min-width: 200px;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.role {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--success) 14%, var(--surface));
+  color: var(--success);
+  padding: 6px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.card {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-xs);
+}
+
+.cardTitle {
+  margin: 0 0 16px;
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 15.5px;
+  color: var(--ink);
+}
+
+.fieldList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fieldIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.fieldIcon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.fieldLabel {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.fieldValue {
+  margin: 2px 0 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.bio {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.note {
+  margin-top: 24px;
+  padding: 14px 18px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}

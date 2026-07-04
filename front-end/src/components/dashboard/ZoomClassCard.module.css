@@ -1,0 +1,135 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.iconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.iconWrap svg {
+  width: 21px;
+  height: 21px;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.statusLive {
+  background: color-mix(in srgb, #ef4444 14%, var(--surface));
+  color: #ef4444;
+}
+.statusUpcoming {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.statusEnded {
+  background: var(--surface-2);
+  color: var(--muted);
+}
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.statusLive .statusDot {
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.metaRow svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--muted-2);
+}
+
+.join {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 11px;
+  border-radius: var(--r-md);
+  font-weight: 600;
+  font-size: 13.5px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.joinActive {
+  background: var(--accent);
+  color: #fff;
+}
+.joinActive:hover {
+  background: var(--accent-strong);
+  transform: translateY(-2px);
+}
+.joinDisabled {
+  background: var(--surface-2);
+  color: var(--muted);
+  pointer-events: none;
+}
+.join svg {
+  width: 15px;
+  height: 15px;
+}

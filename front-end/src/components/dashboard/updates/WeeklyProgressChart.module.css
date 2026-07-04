@@ -1,0 +1,289 @@
+.summaryRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.summaryPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.progressTrack {
+  flex: 1;
+  min-width: 140px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.progressFill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.4s var(--ease-out);
+}
+
+.progressLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.scrollArea {
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin: 0 -4px;
+}
+
+.chart {
+  position: relative;
+  height: 240px;
+  min-width: 720px;
+  padding: 0 4px;
+}
+
+.wavePath {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 0.6;
+  vector-effect: non-scaling-stroke;
+}
+.wavePathDone {
+  stroke: var(--accent);
+}
+
+.marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  border: 2px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--muted);
+  transition: transform 0.2s var(--ease-out), border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.marker:hover .dot {
+  transform: scale(1.12);
+}
+
+.dotDone {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.dotDone svg {
+  width: 15px;
+  height: 15px;
+}
+
+.dotCurrent {
+  width: 38px;
+  height: 38px;
+  background: var(--surface);
+  border-color: var(--accent);
+  color: var(--accent);
+  border-width: 3px;
+}
+
+.currentRing {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  animation: ringPulse 2.4s ease-out infinite;
+}
+@keyframes ringPulse {
+  0% { opacity: 0.55; transform: scale(0.85); }
+  70% { opacity: 0; transform: scale(1.35); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+
+.weekLabel {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+.weekLabelCurrent {
+  color: var(--accent);
+}
+
+.currentTag {
+  position: absolute;
+  top: -22px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--accent);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* ---- Popover ---- */
+.popover {
+  position: absolute;
+  z-index: 30;
+  width: 280px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 18px;
+  transform: translate(-50%, 0);
+}
+
+.popoverHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.popoverWeek {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.popoverClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--muted);
+  border: none;
+  cursor: pointer;
+  flex: none;
+}
+.popoverClose svg {
+  width: 12px;
+  height: 12px;
+}
+
+.popoverTitle {
+  margin: 0 0 4px;
+  font-family: var(--font-sora);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.popoverStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.statusDone { background: color-mix(in srgb, var(--success) 16%, var(--surface)); color: var(--success); }
+.statusCurrent { background: var(--accent-soft); color: var(--accent); }
+.statusUpcoming { background: var(--surface-2); color: var(--muted-2); }
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.taskRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ink);
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+.taskRow:disabled {
+  cursor: default;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 5px;
+  border: 2px solid var(--border-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.checkbox svg {
+  width: 11px;
+  height: 11px;
+  color: #fff;
+}
+.checkboxChecked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.checkboxLocked {
+  border-color: var(--border);
+  color: var(--muted-2);
+}
+.checkboxLocked svg {
+  width: 10px;
+  height: 10px;
+  color: var(--muted-2);
+}
+
+.taskDone {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.taskLocked {
+  color: var(--muted-2);
+}
+
+.lockedNote {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--muted-2);
+}
