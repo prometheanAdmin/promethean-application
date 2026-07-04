@@ -6,7 +6,7 @@
 
 ## Guiding principle: deployment-first, stability over cleverness
 
-This app runs on a real server (AWS EC2). **Always favour a deployment-first mindset — every
+**Always favour a deployment-first mindset — every
 change should keep the app stable and reproducibly deployable.** Before adding or changing
 anything, ask "will this deploy cleanly and predictably on the server?"
 
