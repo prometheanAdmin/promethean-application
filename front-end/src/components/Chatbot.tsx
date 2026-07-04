@@ -37,12 +37,6 @@ export default function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      setMessages([WELCOME_MESSAGE]);
-    }
-  }, [isOpen, messages.length]);
-
-  useEffect(() => {
     if (!isMinimized) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
@@ -67,6 +61,7 @@ export default function Chatbot() {
   };
 
   const openPanel = () => {
+    setMessages((prev) => (prev.length === 0 ? [WELCOME_MESSAGE] : prev));
     setIsOpen(true);
     setIsMinimized(false);
   };

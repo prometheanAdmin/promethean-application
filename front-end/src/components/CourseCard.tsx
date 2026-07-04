@@ -24,15 +24,20 @@ export default function CourseCard({
   mentorRole,
   mentorAvatar,
 }: CourseCardProps) {
-  const tilt = useTilt(6);
+  const {
+    ref: tiltRef,
+    onMouseMove,
+    onMouseEnter,
+    onMouseLeave,
+  } = useTilt(6);
 
   return (
     <div
       className={styles.card}
-      ref={tilt.ref}
-      onMouseMove={tilt.onMouseMove}
-      onMouseEnter={tilt.onMouseEnter}
-      onMouseLeave={tilt.onMouseLeave}
+      ref={tiltRef}
+      onMouseMove={onMouseMove}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div className={styles.tilt}>
         <div className={styles.inner}>

@@ -20,8 +20,8 @@ export default function HexagonCanvas() {
     const yOffset = hexHeight * 0.75;
     
     let hexagons: {x: number, baseY: number}[] = [];
-    let targetMouse = { x: -2000, y: -2000 };
-    let currentMouse = { x: -2000, y: -2000 };
+    const targetMouse = { x: -2000, y: -2000 };
+    const currentMouse = { x: -2000, y: -2000 };
     let scrollY = window.scrollY;
 
     let faintStroke = 'rgba(10, 10, 11, 0.03)';
@@ -56,7 +56,7 @@ export default function HexagonCanvas() {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       canvas.width = w * dpr;
       canvas.height = h * dpr;
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       
       hexagons = [];
       const cols = Math.ceil(w / xOffset) + 2;
@@ -65,7 +65,7 @@ export default function HexagonCanvas() {
       for (let r = -4; r < rows; r++) {
         for (let c = -2; c < cols; c++) {
           let x = c * xOffset;
-          let y = r * yOffset;
+          const y = r * yOffset;
           if (r % 2 !== 0) x += xOffset / 2;
           hexagons.push({ x: x, baseY: y });
         }
@@ -83,7 +83,7 @@ export default function HexagonCanvas() {
       ctx.lineJoin = "round";
       
       hexagons.forEach(hex => {
-        let currentY = hex.baseY - driftY;
+        const currentY = hex.baseY - driftY;
         let fillOpacity = 0;
         let strokeColor = faintStroke;
         

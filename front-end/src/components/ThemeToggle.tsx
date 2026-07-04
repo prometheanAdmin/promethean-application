@@ -1,21 +1,30 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import styles from './ThemeToggle.module.css';
 
-export default function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false);
+function subscribe(onStoreChange: () => void) {
+  window.addEventListener('pm:theme', onStoreChange as EventListener);
+  window.addEventListener('storage', onStoreChange);
 
-  useEffect(() => {
-    setIsDark(document.documentElement.getAttribute('data-theme') === 'dark');
-  }, []);
+  return () => {
+    window.removeEventListener('pm:theme', onStoreChange as EventListener);
+    window.removeEventListener('storage', onStoreChange);
+  };
+}
+
+function getThemeSnapshot() {
+  return document.documentElement.getAttribute('data-theme') === 'dark';
+}
+
+export default function ThemeToggle() {
+  const isDark = useSyncExternalStore(subscribe, getThemeSnapshot, () => false);
 
   const toggle = () => {
     const next = isDark ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     window.localStorage.setItem('theme', next);
     window.dispatchEvent(new CustomEvent('pm:theme', { detail: next }));
-    setIsDark(next === 'dark');
   };
 
   return (

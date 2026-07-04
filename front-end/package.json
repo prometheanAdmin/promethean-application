@@ -2,10 +2,18 @@
   "name": "promethean-web",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "^22.0.0"
+  },
   "scripts": {
+    "check:node": "node ./ensure-node.mjs",
+    "predev": "npm run check:node",
     "dev": "next dev",
+    "prebuild": "npm run check:node",
     "build": "next build",
+    "prestart": "npm run check:node",
     "start": "next start",
+    "prelint": "npm run check:node",
     "lint": "eslint"
   },
   "dependencies": {
