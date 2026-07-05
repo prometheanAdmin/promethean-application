@@ -1,44 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Promethean Frontend
 
-## Getting Started
+Next.js 15 (App Router), TypeScript, Clerk v7 auth.
 
-Use Node.js `v22` for this project:
+> For full stack setup see the [root README](../README.md). This file covers frontend-only development.
+
+---
+
+## Setup
 
 ```bash
-nvm use
+cd front-end
+npm install
 ```
 
-If your shell is still on another version, switch to Node 22 before running any app commands.
+Create `front-end/.env.local`:
 
-First, run the development server:
+```
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+Get the Clerk keys from the Clerk Dashboard → API Keys (or ask the team lead).
+
+---
+
+## Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Frontend: http://localhost:3000. The backend must be running (see root README).
 
-You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Common commands
 
-## Learn More
+```bash
+npm run dev          # dev server with hot reload
+npm run build        # production build
+npm run lint         # ESLint
+npx tsc --noEmit     # TypeScript check (no output = clean)
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Key files
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── layout.tsx           # Root layout — ClerkProvider wraps everything
+│   ├── middleware.ts         # Protects /dashboard/* — redirects unauthenticated users
+│   ├── sign-in/page.tsx     # Clerk SignIn component
+│   ├── sign-up/page.tsx     # Clerk SignUp component
+│   └── sso-callback/page.tsx  # OAuth redirect handler
+├── components/
+│   ├── AuthModal.tsx         # Sign-in / sign-up modal (Clerk v7 Signal API)
+│   ├── Nav.tsx               # Top nav with auth state
+│   └── dashboard/
+│       ├── DashboardShell.tsx  # Auth-gated dashboard wrapper
+│       └── useCurrentStudent.ts  # Hook — fetches /api/v1/me
+├── lib/
+│   ├── api.ts               # Typed fetch wrapper — auto-attaches Clerk JWT
+│   └── auth.ts              # Role helpers — getAppRole(), isStaffRole()
+└── clerk.d.ts               # Augments Clerk's Session type with publicMetadata
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Auth notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Roles come from `user.publicMetadata.role` (set server-side via `auth/sync`). Never use `unsafeMetadata` for role checks — it's user-writable.
+- `src/lib/api.ts` automatically fetches the active Clerk session token and attaches it as `Authorization: Bearer ...` on every request.
+- `/dashboard/*` routes are protected by `src/middleware.ts` using `clerkMiddleware()`. Unauthenticated users are redirected to `/sign-in`.
+- After sign-in, the frontend calls `POST /api/v1/auth/sync` to create/update the user in the database and ensure their role is synced to Clerk.
