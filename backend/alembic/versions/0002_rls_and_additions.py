@@ -43,7 +43,7 @@ def upgrade() -> None:
             server_default=sa.text("now()"),
         ),
     )
-    op.create_index("ix_domains_name", "domains", ["name"], unique=True)
+    op.create_unique_constraint("uq_domains_name", "domains", ["name"])
 
     # ------------------------------------------------------------------
     # BE-008 / KAN-21 — Row-Level Security
@@ -133,7 +133,7 @@ def downgrade() -> None:
     op.execute("DROP POLICY IF EXISTS users_isolation ON users")
 
     # Remove domains table
-    op.drop_index("ix_domains_name", table_name="domains")
+    op.drop_constraint("uq_domains_name", "domains")
     op.drop_table("domains")
 
     # Remove is_verified column
