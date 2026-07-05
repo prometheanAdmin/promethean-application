@@ -1,0 +1,85 @@
+services:
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: promethean_postgres
+    environment:
+      POSTGRES_DB: promethean
+      POSTGRES_USER: promethean
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_local}
+    ports:
+      - "5432:5432" # dev only - remove in production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U promethean -d promethean"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: promethean_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-changeme_local}
+    ports:
+      - "6379:6379" # dev only - remove in production
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: promethean_backend
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://promethean:${POSTGRES_PASSWORD:-changeme_local}@postgres:5432/promethean
+      REDIS_URL: redis://:${REDIS_PASSWORD:-changeme_local}@redis:6379
+    ports:
+      - "8000:8000" # dev only - remove in production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: >
+      sh -c "uv run alembic upgrade head &&
+             uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+  realtime:
+    image: node:22-alpine
+    container_name: promethean_realtime
+    working_dir: /app
+    volumes:
+      - ./realtime:/app
+    ports:
+      - "3001:3001" # dev only - remove in production
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      SENTRY_DSN: ${SENTRY_DSN:-}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      REALTIME_PORT: "3001"
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://127.0.0.1:3001/health', r => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: sh -c "npm install --omit=dev && node src/index.js"
+
+volumes:
+  postgres_data:
+  redis_data:

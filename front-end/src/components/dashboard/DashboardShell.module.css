@@ -172,3 +172,21 @@
     padding: 88px 20px 48px;
   }
 }
+
+.loadingState {
+  width: 100%;
+  height: 100vh;
+  background: var(--surface);
+  animation: shellPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes shellPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}

@@ -1,0 +1,30 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['front-end/**']
+  pull_request:
+    branches: [main]
+    paths: ['front-end/**']
+
+jobs:
+  lint:
+    name: Lint and Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: front-end/package-lock.json
+      - name: Install dependencies
+        working-directory: front-end
+        run: npm ci
+      - name: Lint
+        working-directory: front-end
+        run: npm run lint
+      - name: Type check
+        working-directory: front-end
+        run: npx tsc --noEmit

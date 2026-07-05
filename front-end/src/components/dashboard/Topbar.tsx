@@ -29,9 +29,9 @@ export default function Topbar() {
     setOpenMenu((prev) => (prev === menu ? null : menu));
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setOpenMenu(null);
-    signOut();
+    await signOut();
     router.push('/');
   };
 
@@ -96,7 +96,7 @@ export default function Topbar() {
               <UserIcon />
               View Profile
             </Link>
-            <button type="button" className={`${styles.menuItem} ${styles.menuItemDanger}`} onClick={handleLogout}>
+            <button type="button" className={`${styles.menuItem} ${styles.menuItemDanger}`} onClick={() => void handleLogout()}>
               <LogOutIcon />
               Log out
             </button>

@@ -7,14 +7,33 @@ import ThemeToggle from '@/components/ThemeToggle';
 import Topbar from './Topbar';
 import { dashboardNavItems } from './navItems';
 import { ArrowLeftIcon, MenuIcon, CloseIcon } from './icons';
+import { useCurrentStudent } from './useCurrentStudent';
 import styles from './DashboardShell.module.css';
 
 export default function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isLoaded, isLoggedIn } = useCurrentStudent();
 
   const isActive = (href: string) =>
     href === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(href);
+
+  /*
+   * Render a minimal skeleton while Clerk hydrates the session. This prevents
+   * dashboard content flashing with placeholder data before the real user
+   * loads and acts as a client-side fallback while auth redirects settle.
+   */
+  if (!isLoaded) {
+    return (
+      <div className={styles.shell}>
+        <div className={styles.loadingState} aria-label="Loading dashboard…" />
+      </div>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return null;
+  }
 
   return (
     <div className={styles.shell}>

@@ -1,25 +1,104 @@
+from __future__ import annotations
+
+import logging
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+from typing import Any
+
+import sentry_sdk
+import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sentry_sdk.crons import capture_checkin
+from sentry_sdk.integrations.fastapi import FastApiIntegration
+from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
-from app.api.router import api_router
-from app.core.config import get_settings
-
-settings = get_settings()
-
-# Schema is managed by Alembic migrations (`alembic upgrade head`), not on startup.
-app = FastAPI(title=settings.app_name, debug=settings.debug)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-app.include_router(api_router, prefix="/api")
+from app.config import Settings, get_settings
+from app.middleware.auth import ClerkAuthMiddleware
+from app.middleware.sentry import SentryContextMiddleware
+from app.modules.admin.router import router as admin_router
+from app.modules.identity.router import router as identity_router
+from app.modules.mentors.router import router as mentors_router
+from app.modules.students.router import router as students_router
 
 
-@app.get("/")
-async def root() -> dict[str, str]:
-    return {"app": settings.app_name, "status": "running"}
+def configure_structlog() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    structlog.configure(
+        processors=[
+            structlog.contextvars.merge_contextvars,
+            structlog.processors.TimeStamper(fmt="iso", utc=True),
+            structlog.processors.add_log_level,
+            structlog.processors.JSONRenderer(),
+        ],
+        logger_factory=structlog.PrintLoggerFactory(),
+        cache_logger_on_first_use=True,
+    )
+
+
+def _cors_origins_from_settings(settings: Settings) -> list[str]:
+    return [origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()]
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    settings = get_settings()
+    if settings.SENTRY_DSN:
+        sentry_sdk.init(
+            dsn=settings.SENTRY_DSN,
+            environment=settings.ENVIRONMENT,
+            integrations=[
+                FastApiIntegration(transaction_style="endpoint"),
+                SqlalchemyIntegration(),
+            ],
+            traces_sample_rate=0.2,
+            profiles_sample_rate=0.1,
+            send_default_pii=False,
+        )
+        capture_checkin(
+            monitor_slug="promethean-fastapi-startup",
+            status="ok",
+        )
+    yield
+
+
+def create_app() -> FastAPI:
+    settings = get_settings()
+    configure_structlog()
+
+    app = FastAPI(
+        title="Promethean API",
+        version="1.0.0",
+        debug=settings.DEBUG,
+        lifespan=lifespan,
+    )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=_cors_origins_from_settings(settings),
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    app.add_middleware(SentryContextMiddleware, settings=settings)
+    app.add_middleware(ClerkAuthMiddleware, settings=settings)
+
+    # Routers each declare their own full /api/v1/... prefixes
+    app.include_router(identity_router)
+    app.include_router(students_router)
+    app.include_router(mentors_router)
+    app.include_router(admin_router)
+
+    @app.get("/health")
+    async def health() -> dict[str, Any]:
+        return {"status": "ok", "env": settings.ENVIRONMENT}
+
+    if settings.ENVIRONMENT == "development":
+
+        @app.get("/debug/sentry-test")
+        async def debug_sentry_test() -> None:
+            raise Exception("Sentry test error from Promethean backend")
+
+    return app
+
+
+app = create_app()
