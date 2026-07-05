@@ -18,6 +18,7 @@ dependencies = [
     "sentry-sdk[fastapi]",
     "structlog",
     "python-multipart",
+    "email-validator",
 ]
 
 [build-system]
