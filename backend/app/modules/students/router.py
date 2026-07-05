@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,7 +16,7 @@ router = APIRouter(prefix="/api/v1", tags=["students"])
 
 @router.get("/students/", response_model=list[StudentProfileRead])
 async def list_students(
-    _user: dict = Depends(get_current_user),
+    _user: dict[str, Any] = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> list[StudentProfileRead]:
     result = await db.execute(select(StudentProfile))
@@ -26,7 +28,7 @@ async def list_students(
 async def upsert_student_profile(
     body: StudentProfileUpdate,
     request: Request,
-    _user: dict = Depends(get_current_user),
+    _user: dict[str, Any] = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> StudentProfileRead:
     """Create or update the student profile for the authenticated user."""

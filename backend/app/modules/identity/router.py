@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request, status
@@ -98,7 +99,7 @@ async def _push_role_to_clerk(clerk_user_id: str, role: str) -> None:
 @router.get("/me", response_model=MeResponse)
 async def read_me(
     request: Request,
-    _user: dict = Depends(get_current_user),
+    _user: dict[str, Any] = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> MeResponse:
     """Return the full user record for the authenticated caller.
@@ -130,7 +131,7 @@ async def read_me(
         email=user.email,
         first_name=user.first_name,
         last_name=user.last_name,
-        role=user.role.value,  # type: ignore[arg-type]
+        role=user.role.value,
         profile_complete=_is_profile_complete(user),
         created_at=user.created_at,
     )

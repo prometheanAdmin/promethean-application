@@ -90,7 +90,7 @@ async def _send_mentor_verified_email(profile: MentorProfile) -> None:
         return
 
     try:
-        import resend  # type: ignore[import-untyped]
+        import resend  # type: ignore[import]
 
         resend.api_key = settings.RESEND_API_KEY
 

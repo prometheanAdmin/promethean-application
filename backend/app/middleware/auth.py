@@ -41,7 +41,7 @@ class ClerkAuthMiddleware(BaseHTTPMiddleware):
         call_next: Callable[[Request], Awaitable[Response]],
     ) -> Response:
         request.state.user_id = None
-        request.state.roles: list[str] = []
+        request.state.roles = []  # list[str], set explicitly after auth
         request.state.email = None
 
         if self._should_skip_auth(request):
