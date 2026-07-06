@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCurrentStudent } from './useCurrentStudent';
+import { useStudentContext } from './StudentContext';
 import { useReminders } from './useReminders';
 import { reminderTypeIcon } from './ReminderCard';
 import { BellIcon, UserIcon, LogOutIcon } from './icons';
@@ -11,7 +11,7 @@ import styles from './Topbar.module.css';
 
 export default function Topbar() {
   const router = useRouter();
-  const { student, signOut } = useCurrentStudent();
+  const { student, signOut } = useStudentContext();
   const reminders = useReminders();
   const [openMenu, setOpenMenu] = useState<'notifications' | 'profile' | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);

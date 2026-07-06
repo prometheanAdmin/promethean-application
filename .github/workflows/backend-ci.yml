@@ -49,6 +49,10 @@ jobs:
       ENVIRONMENT: test
       DEBUG: "false"
       CORS_ORIGINS: http://localhost:3000
+      GITHUB_APP_ID: ""
+      GITHUB_APP_PRIVATE_KEY: ""
+      GITHUB_ORG: promethean-dev
+      RESEND_FROM_EMAIL: noreply@promethean.dev
 
     steps:
       - name: Checkout
@@ -60,7 +64,7 @@ jobs:
           version: "latest"
 
       - name: Set up Python
-        run: uv python install 3.12
+        run: uv python install 3.13
 
       - name: Install dependencies
         working-directory: backend

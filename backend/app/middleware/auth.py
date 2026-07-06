@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from time import monotonic
@@ -18,7 +19,22 @@ from app.config import Settings, get_settings
 
 PUBLIC_ROUTES = {
     ("GET", "/health"),
+    ("GET", "/readiness"),
+    # auth/sync is intentionally public — called immediately after Clerk sign-in
+    # before a full JWT session is established on the frontend.
+    ("POST", "/api/v1/auth/sync"),
+    # Public discovery endpoints — no auth required (served from Redis cache or DB)
+    ("GET", "/api/v1/domains"),
+    # NOTE: GET /api/v1/batches is NOT public — requires profile completion (KAN-26).
+    # GET /api/v1/batches/{id} stays public via _PUBLIC_UUID_PATH below.
+    ("GET", "/api/v1/mentors"),
 }
+
+# Exact UUID segment pattern — only matches the 8-4-4-4-12 lowercase hex form.
+# Using re.fullmatch instead of startswith() to prevent over-broad bypasses
+# (e.g. /api/v1/batches/../../admin would not match).
+_UUID_SEG = r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+_PUBLIC_UUID_PATH = re.compile(rf"^/api/v1/(?:batches|mentors)/{_UUID_SEG}$")
 JWKS_CACHE_TTL_SECONDS = 3600.0
 ALLOWED_ALGORITHMS = ["RS256"]
 
@@ -95,7 +111,15 @@ class ClerkAuthMiddleware(BaseHTTPMiddleware):
         ):
             return True
 
-        return (request.method, request.url.path) in PUBLIC_ROUTES
+        if (request.method, request.url.path) in PUBLIC_ROUTES:
+            return True
+
+        # Public UUID-detail routes: GET /api/v1/batches/{uuid}, GET /api/v1/mentors/{uuid}
+        # Exact regex match prevents path-traversal bypasses that startswith() would allow.
+        if request.method == "GET" and _PUBLIC_UUID_PATH.match(request.url.path):
+            return True
+
+        return False
 
     async def _decode_and_verify_token(self, token: str) -> dict[str, Any]:
         header = self._get_unverified_header(token)

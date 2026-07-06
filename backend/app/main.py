@@ -9,17 +9,23 @@ import sentry_sdk
 import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sentry_sdk.crons import capture_checkin
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
+from sqlalchemy import text
 
 from app.config import Settings, get_settings
+from app.database import AsyncSessionLocal
 from app.middleware.auth import ClerkAuthMiddleware
 from app.middleware.sentry import SentryContextMiddleware
 from app.modules.admin.router import router as admin_router
+from app.modules.curriculum.router import router as curriculum_router
+from app.modules.enrollment.router import router as enrollment_router
 from app.modules.identity.router import router as identity_router
 from app.modules.mentors.router import router as mentors_router
 from app.modules.students.router import router as students_router
+from app.redis_client import get_redis_client
 
 
 def configure_structlog() -> None:
@@ -87,10 +93,44 @@ def create_app() -> FastAPI:
     app.include_router(students_router)
     app.include_router(mentors_router)
     app.include_router(admin_router)
+    app.include_router(curriculum_router)
+    app.include_router(enrollment_router)
 
     @app.get("/health")
     async def health() -> dict[str, Any]:
         return {"status": "ok", "env": settings.ENVIRONMENT}
+
+    @app.get("/readiness")
+    async def readiness() -> JSONResponse:
+        """Readiness probe for Kubernetes / ECS health checks.
+
+        Unlike /health (process alive), /readiness checks that all dependencies
+        are reachable and the service can handle traffic.
+        Returns 503 if any dependency is unhealthy.
+        """
+        checks: dict[str, str] = {}
+
+        # Database check
+        try:
+            async with AsyncSessionLocal() as session:
+                await session.execute(text("SELECT 1"))
+            checks["database"] = "ok"
+        except Exception:
+            checks["database"] = "error"
+
+        # Redis check
+        try:
+            redis = get_redis_client()
+            await redis.ping()
+            checks["redis"] = "ok"
+        except Exception:
+            checks["redis"] = "error"
+
+        all_ok = all(v == "ok" for v in checks.values())
+        return JSONResponse(
+            content={"status": "ok" if all_ok else "degraded", "checks": checks},
+            status_code=200 if all_ok else 503,
+        )
 
     if settings.ENVIRONMENT == "development":
 

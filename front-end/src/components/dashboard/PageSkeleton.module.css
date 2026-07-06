@@ -1,0 +1,39 @@
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 8px;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.header {
+  height: 80px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  width: 55%;
+}
+
+.row {
+  height: 20px;
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  width: 90%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.card {
+  height: 140px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+}

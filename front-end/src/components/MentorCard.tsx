@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import styles from './MentorCard.module.css';
 import { useTilt } from './useTilt';
 
@@ -29,8 +30,13 @@ export default function MentorCard({ name, role, company, imageSrc, tags = [] }:
     >
       <div className={styles.tilt}>
         <div className={styles.inner}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className={styles.photo} src={imageSrc} alt={name} />
+          <Image
+            fill
+            src={imageSrc}
+            alt={name}
+            className={styles.photo}
+            sizes="(max-width: 640px) 100vw, 280px"
+          />
           <span className={styles.grain} aria-hidden />
           <span className={styles.scrim} aria-hidden />
 

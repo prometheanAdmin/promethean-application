@@ -1,22 +1,20 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
-import { Inter, Outfit } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 
-// Premium pairing:
-//   Display -> Outfit  (clean, rounded, modern geometric)
-//   Body    -> Inter   (the gold-standard UI sans)
-// Variable names are kept as --font-sora / --font-manrope so every existing
-// module + legacy `var(--font-*)` reference upgrades automatically.
-const inter = Inter({
-  subsets: ['latin'],
+// Self-hosted local fonts.
+// We preserve the existing CSS variable names (`--font-manrope` and
+// `--font-sora`) so the rest of the app keeps working without any selector
+// or module changes.
+const geistBody = localFont({
+  src: './fonts/Geist-Latin.woff2',
   variable: '--font-manrope',
   display: 'swap',
 });
 
-const outfit = Outfit({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+const geistDisplay = localFont({
+  src: './fonts/Geist-Regular.ttf',
   variable: '--font-sora',
   display: 'swap',
 });
@@ -47,7 +45,7 @@ export default function RootLayout({
       signUpFallbackRedirectUrl="/dashboard"
       afterSignOutUrl="/"
     >
-      <html lang="en" className={`${inter.variable} ${outfit.variable}`} suppressHydrationWarning>
+      <html lang="en" className={`${geistBody.variable} ${geistDisplay.variable}`} suppressHydrationWarning>
         <head>
           {/*
            * Inline script runs synchronously before the React bundle to:
@@ -72,7 +70,7 @@ export default function RootLayout({
             }}
           />
         </head>
-        <body className={inter.className}>
+        <body className={geistBody.className}>
           {children}
           {/*
            * Fallback anchor for Clerk's CAPTCHA initialisation.

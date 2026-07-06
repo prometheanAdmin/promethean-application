@@ -1,3 +1,3 @@
-from app.modules.identity.models import Role, User
+from app.modules.identity.models import User
 
-__all__ = ["Role", "User"]
+__all__ = ["User"]

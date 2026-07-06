@@ -22,7 +22,15 @@ class Settings(BaseSettings):
     RESEND_API_KEY: str = ""
     ENVIRONMENT: str = "development"
     DEBUG: bool = False
-    CORS_ORIGINS: str = ""
+    CORS_ORIGINS: str = "http://localhost:3000"
+
+    # GitHub App — used in Epic-02 batch creation and GitHub OAuth
+    GITHUB_APP_ID: str = ""
+    GITHUB_APP_PRIVATE_KEY: str = ""  # PEM string, newlines as \n
+    GITHUB_ORG: str = "promethean-dev"
+
+    # Email — Resend sender domain
+    RESEND_FROM_EMAIL: str = "noreply@promethean.dev"
 
 
 @lru_cache

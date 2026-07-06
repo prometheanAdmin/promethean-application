@@ -30,7 +30,7 @@ AsyncSessionLocal = async_sessionmaker(
 async def get_db(user_id: str | None = None) -> AsyncIterator[AsyncSession]:
     async with AsyncSessionLocal() as session:
         await session.execute(
-            text("SET LOCAL app.current_user_id = :user_id"),
+            text("SELECT set_config('app.current_user_id', :user_id, true)"),
             {"user_id": user_id or ""},
         )
         try:

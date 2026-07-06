@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { ChatRoom } from '@/lib/community';
-import { useCurrentStudent } from '@/components/dashboard/useCurrentStudent';
+import { useStudentContext } from '@/components/dashboard/StudentContext';
 import { ArrowLeftIcon, ChatIcon, SendIcon } from '@/components/dashboard/icons';
 import styles from './CommunityChat.module.css';
 
@@ -10,7 +10,7 @@ let localMessageId = 0;
 const nextId = () => `local-${Date.now()}-${localMessageId++}`;
 
 export default function CommunityChat({ rooms }: { rooms: ChatRoom[] }) {
-  const { student } = useCurrentStudent();
+  const { student } = useStudentContext();
   const [roomsState, setRoomsState] = useState(rooms);
   const [selectedRoomId, setSelectedRoomId] = useState(rooms[0]?.id ?? '');
   const [mobileShowChat, setMobileShowChat] = useState(false);

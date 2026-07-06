@@ -17,6 +17,7 @@
   border-right: 1px solid var(--border);
   z-index: 40;
   transition: transform 0.3s var(--ease-out);
+  will-change: transform;
 }
 
 .logoGroup {

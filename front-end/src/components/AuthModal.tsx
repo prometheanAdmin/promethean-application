@@ -1,11 +1,16 @@
 'use client';
 
-import { useSignIn, useSignUp } from '@clerk/nextjs';
+import { useAuth, useClerk, useSignIn, useSignUp } from '@clerk/nextjs';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import FloatingDomains from '@/components/FloatingDomains';
+
+// Deferred — decorative background only; no SSR needed and not on the
+// critical render path.  Lazy-loading keeps the auth page JS bundle small.
+const FloatingDomains = dynamic(() => import('@/components/FloatingDomains'), { ssr: false });
 import ThemeToggle from '@/components/ThemeToggle';
+import { syncClerkUser } from '@/lib/backendAuth';
 import { DEFAULT_APP_ROLE } from '@/lib/auth';
 import styles from './AuthModal.module.css';
 
@@ -78,6 +83,8 @@ export default function AuthModal({
   footerLinkHref,
 }: AuthModalProps) {
   const router = useRouter();
+  const clerk = useClerk();
+  const { getToken } = useAuth();
 
   /*
    * @clerk/react v6 (used by @clerk/nextjs v7) returns the Signal-based
@@ -114,26 +121,64 @@ export default function AuthModal({
   const finalizeAuthentication = async (
     resource: {
       finalize: (params: {
-        navigate: (params: { decorateUrl: (url: string) => string }) => void;
+        navigate: (params: {
+          decorateUrl: (url: string) => string;
+          session?: {
+            currentTask?: {
+              key: string;
+            } | null;
+          } | null;
+        }) => void;
       }) => Promise<{ error: unknown }>;
     }
   ) => {
+    let destination = '/dashboard';
+
     const result = await resource.finalize({
-      navigate: ({ decorateUrl }) => {
-        const destination = decorateUrl('/dashboard');
-
-        if (destination.startsWith('http://') || destination.startsWith('https://')) {
-          window.location.href = destination;
-          return;
-        }
-
-        router.replace(destination);
+      navigate: ({ decorateUrl, session }) => {
+        const sessionTaskKey = session?.currentTask?.key;
+        destination = decorateUrl(
+          sessionTaskKey ? `/sign-in/tasks/${sessionTaskKey}` : '/dashboard'
+        );
       },
     });
 
     if (result.error) {
       throw result.error;
     }
+
+    const authToken = (await getToken({ skipCache: true })) ?? (await getToken()) ?? undefined;
+    const currentUser = clerk.user;
+
+    if (currentUser) {
+      try {
+        await syncClerkUser(
+          {
+            id: currentUser.id,
+            firstName: currentUser.firstName,
+            lastName: currentUser.lastName,
+            imageUrl: currentUser.imageUrl,
+            primaryEmailAddress: currentUser.primaryEmailAddress
+              ? { emailAddress: currentUser.primaryEmailAddress.emailAddress }
+              : null,
+          },
+          authToken
+        );
+      } catch {
+        /*
+         * Dashboard bootstrap retries /auth/sync on first load, so we keep this
+         * eager sync best-effort to avoid trapping the user on the auth screen if
+         * the backend has a transient issue.
+         */
+      }
+    }
+
+    if (destination.startsWith('http://') || destination.startsWith('https://')) {
+      window.location.href = destination;
+      return;
+    }
+
+    router.replace(destination);
   };
 
   // ─── OAuth handler ──────────────────────────────────────────────────────

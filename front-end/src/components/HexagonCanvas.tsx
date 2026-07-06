@@ -73,32 +73,61 @@ export default function HexagonCanvas() {
     };
 
     let animationId = 0;
+    let paused = false;
+
+    // Pause the RAF loop when the tab is hidden — no point burning CPU on an
+    // off-screen canvas.  Resume immediately when the tab becomes visible again.
+    const onVisibilityChange = () => {
+      paused = document.hidden;
+      if (!paused && animationId === 0) {
+        animationId = requestAnimationFrame(animate);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
     const animate = (time: number) => {
+      if (paused) {
+        animationId = 0;
+        return;
+      }
+
+      // Lerp mouse toward target; track per-frame delta to detect settling.
+      const lx = (targetMouse.x - currentMouse.x) * 0.08;
+      const ly = (targetMouse.y - currentMouse.y) * 0.08;
+      currentMouse.x += lx;
+      currentMouse.y += ly;
+
+      // When the lerp delta is tiny and the cursor is off-screen, skip the
+      // per-hex glow calculation — the canvas only shows the faint grid.
+      const mouseActive =
+        Math.abs(lx) > 0.3 ||
+        Math.abs(ly) > 0.3 ||
+        (currentMouse.x > -500 && currentMouse.y > -500);
+
       ctx.clearRect(0, 0, w, h);
-      
-      currentMouse.x += (targetMouse.x - currentMouse.x) * 0.08;
-      currentMouse.y += (targetMouse.y - currentMouse.y) * 0.08;
 
       const driftY = (time * 0.015 + scrollY * 0.3) % (yOffset * 2);
       ctx.lineJoin = "round";
-      
+
       hexagons.forEach(hex => {
         const currentY = hex.baseY - driftY;
         let fillOpacity = 0;
         let strokeColor = faintStroke;
-        
-        const dx = currentMouse.x - hex.x;
-        const dy = currentMouse.y - currentY;
-        
-        if (Math.abs(dx) < 350 && Math.abs(dy) < 350) {
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 350) {
-             const hoverIntensity = Math.pow(1 - (dist / 350), 1.5);
-             fillOpacity = hoverIntensity * 0.04;
-             strokeColor = `rgba(0, 82, 255, ${0.05 + hoverIntensity * 0.3})`;
+
+        if (mouseActive) {
+          const dx = currentMouse.x - hex.x;
+          const dy = currentMouse.y - currentY;
+
+          if (Math.abs(dx) < 350 && Math.abs(dy) < 350) {
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 350) {
+              const hoverIntensity = Math.pow(1 - (dist / 350), 1.5);
+              fillOpacity = hoverIntensity * 0.04;
+              strokeColor = `rgba(0, 82, 255, ${0.05 + hoverIntensity * 0.3})`;
+            }
           }
         }
-        
+
         const isHovered = fillOpacity > 0;
 
         ctx.save();
@@ -115,7 +144,7 @@ export default function HexagonCanvas() {
 
         ctx.restore();
       });
-      
+
       animationId = requestAnimationFrame(animate);
     };
 
@@ -128,6 +157,7 @@ export default function HexagonCanvas() {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('pm:theme', updateFaintStroke);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       cancelAnimationFrame(animationId);
     };
   }, []);

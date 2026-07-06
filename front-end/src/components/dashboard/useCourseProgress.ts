@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import { getCourseWeeks, loadCompletedTasks, toggleTaskCompletion, getCurrentWeekNumber, getWeekStatus, COURSE_PROGRESS_EVENT } from '@/lib/courseProgress';
-import { useCurrentStudent } from './useCurrentStudent';
+import { useStudentContext } from './StudentContext';
 
 const EMPTY_COMPLETED: Record<number, string[]> = {};
 
@@ -16,7 +16,7 @@ function subscribe(callback: () => void) {
 }
 
 export function useCourseProgress() {
-  const { student } = useCurrentStudent();
+  const { student } = useStudentContext();
   const weeks = useMemo(() => getCourseWeeks(student.domain, student.mentorName), [student.domain, student.mentorName]);
 
   const completed = useSyncExternalStore(
