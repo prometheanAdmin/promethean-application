@@ -1,6 +1,6 @@
 'use client';
 
-import { useCurrentStudent } from '@/components/dashboard/useCurrentStudent';
+import { useStudentContext } from '@/components/dashboard/StudentContext';
 import ProfileSummaryCard from '@/components/dashboard/ProfileSummaryCard';
 import QuickAccessCard from '@/components/dashboard/QuickAccessCard';
 import RightRail from '@/components/dashboard/RightRail';
@@ -17,7 +17,7 @@ import {
 import styles from './page.module.css';
 
 export default function DashboardHomePage() {
-  const { student } = useCurrentStudent();
+  const { student } = useStudentContext();
   const firstName = student.name.split(' ')[0];
 
   return (

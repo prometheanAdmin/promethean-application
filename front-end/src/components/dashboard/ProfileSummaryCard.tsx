@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import type { Student } from '@/lib/students';
+import type { CurrentStudent } from './useCurrentStudent';
 import { ArrowRightIcon } from './icons';
 import styles from './ProfileSummaryCard.module.css';
 
-export default function ProfileSummaryCard({ student }: { student: Student }) {
+export default function ProfileSummaryCard({ student }: { student: CurrentStudent }) {
   return (
     <div className={styles.card}>
       <span className={styles.avatar}>{student.initials}</span>

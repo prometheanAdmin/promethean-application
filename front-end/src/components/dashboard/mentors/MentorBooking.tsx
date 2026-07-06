@@ -1,8 +1,9 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { mentors, type Mentor } from '@/lib/mentors';
-import { useCurrentStudent } from '@/components/dashboard/useCurrentStudent';
+import { type Mentor } from '@/lib/mentors';
+import { useStudentContext } from '@/components/dashboard/StudentContext';
+import { useMentorDirectory } from '@/components/dashboard/useMentorDirectory';
 import { useBookings } from '@/components/dashboard/useBookings';
 import { useFavorites } from '@/components/dashboard/useFavorites';
 import { SearchIcon, UserIcon, HeartIcon, StarIcon } from '@/components/dashboard/icons';
@@ -13,7 +14,6 @@ import MessageMentorModal from './MessageMentorModal';
 import UpcomingSessionsList from './UpcomingSessionsList';
 import styles from './MentorBooking.module.css';
 
-const domains = ['All', ...Array.from(new Set(mentors.map((m) => m.domain)))];
 const ratingFilters = [
   { label: 'Any rating', value: 0 },
   { label: '4.5+', value: 4.5 },
@@ -28,7 +28,8 @@ const sortOptions = [
 type SortValue = (typeof sortOptions)[number]['value'];
 
 export default function MentorBooking() {
-  const { student } = useCurrentStudent();
+  const { student } = useStudentContext();
+  const { mentors } = useMentorDirectory();
   const { bookings, book, cancel } = useBookings();
   const { favorites, isFavorite, toggle: toggleFavorite } = useFavorites();
 
@@ -41,6 +42,11 @@ export default function MentorBooking() {
   const [bookingMentor, setBookingMentor] = useState<Mentor | null>(null);
   const [profileMentor, setProfileMentor] = useState<Mentor | null>(null);
   const [messagingMentor, setMessagingMentor] = useState<Mentor | null>(null);
+
+  const domains = useMemo(
+    () => ['All', ...Array.from(new Set(mentors.map((mentor) => mentor.domain)))],
+    [mentors]
+  );
 
   const filteredMentors = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -78,7 +84,7 @@ export default function MentorBooking() {
     }
 
     return sorted;
-  }, [query, domainFilter, minRating, favoritesOnly, favorites, sortBy, student.domain]);
+  }, [query, domainFilter, minRating, favoritesOnly, favorites, mentors, sortBy, student.domain]);
 
   return (
     <>

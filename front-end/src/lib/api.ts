@@ -21,7 +21,8 @@ export class ApiError extends Error {
     public readonly status: number,
     public readonly code: string,
     message: string,
-    public readonly correlationId?: string
+    public readonly correlationId?: string,
+    public readonly detail?: unknown
   ) {
     super(message);
     this.name = 'ApiError';
@@ -89,16 +90,31 @@ async function request<T>(
 
       if (!response.ok) {
         let errorMessage = response.statusText;
+        let errorCode = `HTTP_${response.status}`;
+        let errorDetail: unknown;
 
         try {
           const errorBody = (await response.json()) as {
-            detail?: string | Array<{ msg: string }>;
+            detail?:
+              | string
+              | Array<{ msg: string }>
+              | { code?: string; message?: string };
           };
+          errorDetail = errorBody.detail;
 
           if (typeof errorBody.detail === 'string') {
             errorMessage = errorBody.detail;
           } else if (Array.isArray(errorBody.detail)) {
             errorMessage = errorBody.detail.map((detail) => detail.msg).join(', ');
+          } else if (
+            errorBody.detail &&
+            typeof errorBody.detail === 'object' &&
+            typeof errorBody.detail.message === 'string'
+          ) {
+            if (typeof errorBody.detail.code === 'string' && errorBody.detail.code) {
+              errorCode = errorBody.detail.code;
+            }
+            errorMessage = errorBody.detail.message;
           }
         } catch {
           // Non-JSON response bodies fall back to the HTTP status text.
@@ -106,9 +122,10 @@ async function request<T>(
 
         const error = new ApiError(
           response.status,
-          `HTTP_${response.status}`,
+          errorCode,
           errorMessage,
-          responseCorrelationId
+          responseCorrelationId,
+          errorDetail
         );
 
         if (

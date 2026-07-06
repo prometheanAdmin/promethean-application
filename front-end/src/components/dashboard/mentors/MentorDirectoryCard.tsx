@@ -1,7 +1,7 @@
 import type { Mentor } from '@/lib/mentors';
 import { isEnrolledWithMentor } from '@/lib/mentors';
-import type { Student } from '@/lib/students';
 import { useFavorites } from '@/components/dashboard/useFavorites';
+import type { CurrentStudent } from '@/components/dashboard/useCurrentStudent';
 import { StarIcon, CalendarCheckIcon, ChatIcon, LockIcon, HeartIcon } from '@/components/dashboard/icons';
 import styles from './MentorDirectoryCard.module.css';
 
@@ -9,7 +9,7 @@ const TOP_RATED_THRESHOLD = 4.8;
 
 interface MentorDirectoryCardProps {
   mentor: Mentor;
-  student: Student;
+  student: CurrentStudent;
   onBook: (mentor: Mentor) => void;
   onMessage: (mentor: Mentor) => void;
   onViewProfile: (mentor: Mentor) => void;

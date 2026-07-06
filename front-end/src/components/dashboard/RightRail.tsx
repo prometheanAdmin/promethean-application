@@ -1,14 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useCurrentStudent } from './useCurrentStudent';
+import { useStudentContext } from './StudentContext';
 import { useCourseProgress } from './useCourseProgress';
 import { useBookings } from './useBookings';
 import { CalendarCheckIcon, ArrowRightIcon } from './icons';
 import styles from './RightRail.module.css';
 
 export default function RightRail() {
-  const { student } = useCurrentStudent();
+  const { student } = useStudentContext();
   const { currentWeek, totalWeeks, weeks } = useCourseProgress();
   const { bookings } = useBookings();
 

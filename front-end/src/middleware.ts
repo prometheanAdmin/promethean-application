@@ -5,8 +5,9 @@ import type { NextRequest } from 'next/server';
 /*
  * Route protection matrix:
  *
- * /dashboard/(*) → PROTECTED  Student and mentor workspace. Unauthenticated
- *                              requests are redirected to NEXT_PUBLIC_CLERK_SIGN_IN_URL.
+ * /dashboard/(*) and /profile-setup → PROTECTED  Student and mentor workspace.
+ *                                      Unauthenticated requests are redirected to
+ *                                      NEXT_PUBLIC_CLERK_SIGN_IN_URL.
  *
  * /api/(*)       → PUBLIC at the edge. Individual handlers enforce auth via
  *                  the FastAPI backend JWT check. Not protected here because:
@@ -19,7 +20,7 @@ import type { NextRequest } from 'next/server';
  * Everything else → PUBLIC. Landing page, /sign-in, /sign-up, /sso-callback,
  *                   static assets, marketing pages.
  */
-const isProtectedRoute = createRouteMatcher(['/dashboard(.*)']);
+const isProtectedRoute = createRouteMatcher(['/dashboard(.*)', '/profile-setup(.*)']);
 
 export default clerkMiddleware(async (auth, request: NextRequest) => {
   /*
