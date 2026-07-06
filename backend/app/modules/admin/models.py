@@ -1,23 +1,15 @@
+"""Admin module ORM models.
+
+The Domain model was the sole model here and has been moved to the
+curriculum module, which now owns the domains table exclusively
+(module-boundary rule: each module owns its tables).
+
+This re-export is provided for backward compatibility with any import
+that references ``app.modules.admin.models.Domain``.  New code should
+import directly from ``app.modules.curriculum.models``.
+"""
+
 from __future__ import annotations
 
-from datetime import datetime
-
-from sqlalchemy import DateTime, String, func
-from sqlalchemy.orm import Mapped, mapped_column
-
-from app.database import Base
-
-
-class Domain(Base):
-    """A field-of-study domain that students and mentors can be assigned to."""
-
-    __tablename__ = "domains"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
-    description: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-        nullable=False,
-    )
+# Re-export so existing imports continue to work during the transition.
+from app.modules.curriculum.models import Domain as Domain  # noqa: F401

@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import os
 from logging.config import fileConfig
+from typing import Any
 
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
@@ -10,6 +11,9 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 from app.database import Base
 from app.modules.admin import models as admin_models  # noqa: F401
+from app.modules.batches import models as batch_models  # noqa: F401
+from app.modules.curriculum import models as curriculum_models  # noqa: F401
+from app.modules.enrollment import models as enrollment_models  # noqa: F401
 from app.modules.identity import models as identity_models  # noqa: F401
 from app.modules.mentors import models as mentor_models  # noqa: F401
 from app.modules.students import models as student_models  # noqa: F401
@@ -40,7 +44,7 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 
-def do_run_migrations(connection) -> None:
+def do_run_migrations(connection: Any) -> None:  # noqa: ANN401
     context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
 
     with context.begin_transaction():
